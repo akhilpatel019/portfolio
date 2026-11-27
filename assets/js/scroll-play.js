@@ -29,25 +29,6 @@
     greetingEl.textContent = (h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening') + ' — welcome to my world';
   }
 
-  /* ---------- 3. Hero title letters (subtle hover) ---------- */
-  function splitLetters(el) {
-    Array.from(el.childNodes).forEach(node => {
-      if (node.nodeType === 3) {
-        const frag = document.createDocumentFragment();
-        node.textContent.split('').forEach(ch => {
-          if (ch === ' ') { frag.appendChild(document.createTextNode(' ')); return; }
-          const s = document.createElement('span');
-          s.className = 'play-letter';
-          s.textContent = ch;
-          frag.appendChild(s);
-        });
-        el.replaceChild(frag, node);
-      } else if (node.nodeType === 1 && node.tagName !== 'BR') splitLetters(node);
-    });
-  }
-  const heroTitle = $('.hero-title');
-  if (heroTitle && !reducedMotion) splitLetters(heroTitle);
-
   /* ---------- 4. Scroll reveals (staggered) ---------- */
   const revealEls = $$('.service-item, .skill-item, .timeline-item, .project-card, .contact-card, .stat-item');
   revealEls.forEach((el, i) => {

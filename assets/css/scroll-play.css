@@ -28,11 +28,15 @@
 
 /* ---------- Hero greeting + hint ---------- */
 .hero-greeting {
-  display: inline-flex; align-items: center; gap: 8px;
+  display: flex; width: fit-content; align-items: center; gap: 8px;
   background: rgba(213,79,42,.08); border: 1px solid rgba(213,79,42,.22);
   color: var(--primary-color); padding: 7px 14px; border-radius: 999px;
-  font-size: .78rem; font-weight: 600; letter-spacing: .4px; margin-bottom: 14px;
+  font-size: .78rem; font-weight: 600; letter-spacing: .4px; margin-bottom: 16px;
 }
+.hero-subtitle { display: block; }
+.hero-title { line-height: 1.15; overflow-wrap: break-word; }
+.typing-wrap { min-width: 0 !important; white-space: nowrap; }
+.typing-text { white-space: nowrap; }
 .hero-hint {
   display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
   font-size: .82rem; color: #999; letter-spacing: .3px;
