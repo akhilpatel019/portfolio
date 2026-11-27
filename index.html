@@ -32,6 +32,9 @@ REMIX ICON
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
 
+    <!-- PLAYGROUND CSS (interactive layer) -->
+    <link rel="stylesheet" href="assets/css/playground.css">
+
 
 </head>
 
@@ -137,6 +140,10 @@ HEADER
                         </li>
 
                         <li>
+                            <a href="#playground">Playground</a>
+                        </li>
+
+                        <li>
                             <a href="#contact">Contact</a>
                         </li>
 
@@ -202,6 +209,10 @@ MOBILE MENU
                 </li>
 
                 <li>
+                    <a href="#playground">Playground</a>
+                </li>
+
+                <li>
                     <a href="#contact">Contact</a>
                 </li>
 
@@ -232,6 +243,8 @@ HERO SECTION
                 <canvas id="hero-webgl-canvas" class="hero-webgl-canvas" aria-hidden="true"></canvas>
 
                 <div class="hero-content hero-animate">
+
+                    <span class="hero-greeting"><i class="ri-hand-wave-line"></i><span class="hero-greeting-text">Welcome to my world</span></span>
 
                     <span class="hero-subtitle">
 
@@ -295,7 +308,13 @@ HERO SECTION
 
                     </div>
 
+                    <span class="hero-hint"><i class="ri-cursor-line"></i> Psst — pop the floating bubbles, click my name, move your mouse. This page plays back.</span>
+
                 </div>
+
+                <!-- BUBBLE POP GAME -->
+                <div class="hero-bubbles" id="heroBubbles" aria-hidden="true"></div>
+                <div class="bubble-score" id="bubbleScore"><i class="ri-bubble-chart-line"></i> Score <b id="bubbleScoreVal">0</b></div>
 
             </div>
 
@@ -368,7 +387,29 @@ HERO SECTION
 
         </div>
 
+        <!-- ROTATING BADGE (clickable) -->
+        <div class="rotating-badge" id="rotatingBadge" title="Click me!">
+            <svg viewBox="0 0 100 100">
+                <defs><path id="badgeCircle" d="M 50,50 m -38,0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0"/></defs>
+                <circle cx="50" cy="50" r="49" fill="#d54f2a"/>
+                <text fill="#fff" font-size="10.5" font-weight="700" letter-spacing="2.5">
+                    <textPath href="#badgeCircle">CREATIVE DEVELOPER • AKHIL PATEL • </textPath>
+                </text>
+            </svg>
+            <div class="badge-core"><i class="ri-sparkling-line"></i></div>
+        </div>
+
     </section>
+
+    <!-- =========================================
+MARQUEE TICKER
+========================================= -->
+    <div class="marquee-wrap" aria-hidden="true">
+        <div class="marquee-track">
+            <span>Available for work <b>✦</b> Frontend <b>✦</b> WordPress <b>✦</b> Shopify <b>✦</b> Creative Developer <b>✦</b> Available for work <b>✦</b> Frontend <b>✦</b> WordPress <b>✦</b> Shopify <b>✦</b> Creative Developer <b>✦</b></span>
+            <span>Available for work <b>✦</b> Frontend <b>✦</b> WordPress <b>✦</b> Shopify <b>✦</b> Creative Developer <b>✦</b> Available for work <b>✦</b> Frontend <b>✦</b> WordPress <b>✦</b> Shopify <b>✦</b> Creative Developer <b>✦</b></span>
+        </div>
+    </div>
 
 
 
@@ -449,6 +490,11 @@ SKILLS SECTION
                 </div>
                 <div class="about-bio hero-animate" style="text-align: center; margin-bottom: 40px;">
                     <span class="about-subtitle">Skills That Deliver Results</span>
+                    <p style="font-size:.95rem;">Tip: click any skill card to reveal its mastery level.</p>
+                </div>
+
+                <div class="shuffle-wrap hero-animate">
+                    <button class="shuffle-btn" id="shuffleSkills"><i class="ri-shuffle-line"></i> Shuffle Skills</button>
                 </div>
 
                 <div class="skills-grid">
@@ -638,9 +684,13 @@ WORK SECTION
                 <h2 class="about-title">Projects.</h2>
             </div>
 
-            <div class="about-bio hero-animate" style="text-align: center; margin-bottom: 80px;">
+            <div class="about-bio hero-animate" style="text-align: center; margin-bottom: 40px;">
                 <span class="about-subtitle">Crafted With Care</span>
                 <p>A selection of recent websites I've designed and developed.</p>
+            </div>
+
+            <div class="surprise-wrap hero-animate">
+                <button class="surprise-btn" id="surpriseProject"><i class="ri-dice-line"></i> Surprise Me — Random Project</button>
             </div>
 
             <div class="work-grid">
@@ -756,13 +806,79 @@ WORK SECTION
     </section>
 
     <!-- =========================================
+PLAYGROUND SECTION (interactive games)
+========================================= -->
+    <section class="playground-section" id="playground">
+        <div class="about-container">
+
+            <div class="about-header hero-animate">
+                <div class="about-watermark">05</div>
+                <h2 class="about-title">Playground.</h2>
+            </div>
+
+            <div class="about-bio hero-animate" style="text-align: center; margin-bottom: 60px;">
+                <span class="about-subtitle">Don't Just Scroll — Play</span>
+                <p>This is my interactive corner. Draw with physics balls, catch the dot against the clock, and try to catch a button that does not want to be caught. Warning: highly addictive.</p>
+                <p style="font-size:.85rem; margin-top:12px; opacity:.75;">Secret: type the Konami code (↑ ↑ ↓ ↓ ← → ← → B A) or click the AP. logo 5 times for Party Mode.</p>
+            </div>
+
+            <div class="playground-grid">
+
+                <!-- Physics canvas -->
+                <div class="play-card hero-animate">
+                    <h3><i class="ri-bubble-chart-fill"></i> Physics Ball Canvas</h3>
+                    <p class="play-sub">Click or drag inside the canvas to spawn rainbow balls. They bounce, roll and pile up. Change gravity, rain balls, or shake the whole thing.</p>
+                    <canvas id="play-canvas"></canvas>
+                    <div class="play-controls">
+                        <button class="play-btn" id="ballRainBtn"><i class="ri-rainy-line"></i> Ball Rain</button>
+                        <button class="play-btn ghost" id="ballShakeBtn"><i class="ri-shake-line"></i> Shake</button>
+                        <button class="play-btn ghost" id="ballClearBtn"><i class="ri-eraser-line"></i> Clear</button>
+                        <label class="play-slider">Gravity <input type="range" id="gravitySlider" min="-0.3" max="1" step="0.05" value="0.35"> <span id="gravityVal">0.35</span></label>
+                        <span class="play-stat">Balls: <b id="ballCount">0</b></span>
+                    </div>
+                </div>
+
+                <!-- Reaction game + runaway -->
+                <div style="display:flex; flex-direction:column; gap:28px;">
+                    <div class="play-card hero-animate">
+                        <h3><i class="ri-crosshair-line"></i> Catch The Dot</h3>
+                        <p class="play-sub">The dot teleports every time you catch it. You have 15 seconds. How many can you catch?</p>
+                        <div class="reaction-box" id="reactionBox">
+                            <div class="reaction-msg" id="reactionMsg">Press start, then catch the dot as many times as you can!</div>
+                            <div class="reaction-dot" id="reactionDot"></div>
+                        </div>
+                        <div class="reaction-hud">
+                            <span>Score: <b id="reactionScore">0</b></span>
+                            <span>Time: <b id="reactionTime">15</b>s</span>
+                        </div>
+                        <div class="play-controls">
+                            <button class="play-btn" id="reactionStart"><i class="ri-play-line"></i> Start Game</button>
+                        </div>
+                    </div>
+
+                    <div class="play-card hero-animate">
+                        <h3><i class="ri-footprint-line"></i> Catch The Button</h3>
+                        <p class="play-sub">This button is scared of you. It will run away 6 times. Catch it to win.</p>
+                        <div class="runaway-zone" id="runawayZone">
+                            <button class="runaway-btn" id="runawayBtn">Catch me!</button>
+                        </div>
+                        <p class="runaway-msg" id="runawayMsg">Go on, try to click it.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- =========================================
 CONTACT SECTION
 ========================================= -->
     <section class="contact-section" id="contact">
         <div class="about-container">
 
             <div class="about-header hero-animate">
-                <div class="about-watermark">05</div>
+                <div class="about-watermark">06</div>
                 <h2 class="about-title">Contact.</h2>
             </div>
 
@@ -780,6 +896,7 @@ CONTACT SECTION
                     </div>
                     <h3>Email</h3>
                     <a href="mailto:akhilpatel99097@gmail.com">akhilpatel99097@gmail.com</a>
+                    <button class="copy-btn" id="copyEmail"><i class="ri-file-copy-line"></i> Copy email</button>
                 </div>
 
                 <!-- Phone -->
@@ -825,6 +942,7 @@ FOOTER
                         <li><a href="#skills">Skills</a></li>
                         <li><a href="#journey">Journey</a></li>
                         <li><a href="#work">Work</a></li>
+                        <li><a href="#playground">Playground</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
@@ -868,6 +986,17 @@ FOOTER
         <i class="ri-arrow-up-line"></i>
     </a>
 
+    <!-- PLAY DOCK (floating fun menu) -->
+    <div class="play-dock">
+        <div class="play-menu" id="playMenu">
+            <button id="dockConfetti"><i class="ri-confetti-line"></i> Confetti Rain</button>
+            <button id="partyBtn"><i class="ri-party-line"></i> Party Mode</button>
+            <button id="dockBubbles"><i class="ri-bubble-chart-line"></i> Bubble Bonus</button>
+            <button id="dockScroll"><i class="ri-gamepad-line"></i> Go to Playground</button>
+        </div>
+        <button class="play-dock-btn" id="playDockBtn" aria-label="Open play menu"><i class="ri-gamepad-fill"></i></button>
+    </div>
+
     <!-- LENIS SMOOTH SCROLL -->
     <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 
@@ -879,6 +1008,9 @@ FOOTER
 
     <!-- HERO 3D SCENE -->
     <script src="assets/js/hero-scene.js"></script>
+
+    <!-- PLAYGROUND (interactive layer) -->
+    <script src="assets/js/playground.js"></script>
 </body>
 
 </html>
