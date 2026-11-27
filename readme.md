@@ -13,7 +13,7 @@ A personal portfolio for Akhil Patel, frontend, WordPress, and Shopify developer
 
 ## Tech
 
-HTML5, CSS3, vanilla JavaScript, Lenis smooth scrolling, Remix Icon. No build step is required.
+HTML5, CSS3, vanilla JavaScript, native browser scrolling, Remix Icon. No build step is required.
 
 ## Run locally
 

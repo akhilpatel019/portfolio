@@ -8,7 +8,7 @@
   --accent: #c75b3d;
   --heading-font: 'Cormorant Garamond', Georgia, serif;
 }
-html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+html { scroll-behavior: auto; scroll-padding-top: 100px; }
 body {
   --primary-color: var(--accent);
   background: var(--paper) !important;
