@@ -143,25 +143,45 @@
     updateTimeline();
   }
 
-  /* ---------- 9. Project stacking cards (scroll scrub) ---------- */
-  const workGrid = $('.work-grid');
-  if (workGrid && !reducedMotion && window.innerWidth > 768) {
-    workGrid.classList.add('stack-mode');
-    const cards = $$('.project-card', workGrid);
-    function updateStack() {
-      cards.forEach((card, i) => {
-        if (i === cards.length - 1) return;
-        const next = cards[i + 1];
-        const nr = next.getBoundingClientRect();
-        const vh = window.innerHeight;
-        // as next card approaches, scale current down slightly
-        const prog = Math.min(1, Math.max(0, (vh - nr.top) / vh));
-        card.style.transform = `scale(${1 - prog * 0.05})`;
-        card.style.filter = `brightness(${1 - prog * 0.12})`;
-      });
+  /* ---------- 9. Project numbers + image parallax ---------- */
+  $$('.project-card').forEach((card, i) => {
+    if (!$('.project-num', card)) {
+      const n = document.createElement('span');
+      n.className = 'project-num';
+      n.textContent = String(i + 1).padStart(2, '0');
+      const imgWrap = $('.project-image', card);
+      if (imgWrap) imgWrap.appendChild(n);
     }
-    window.addEventListener('scroll', updateStack, { passive: true });
-    updateStack();
+  });
+  const projectImgs = $$('.project-image img');
+  function updateProjectParallax() {
+    if (reducedMotion) return;
+    projectImgs.forEach(img => {
+      const wrap = img.parentElement;
+      const r = wrap.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > window.innerHeight) return;
+      const off = (r.top + r.height / 2 - window.innerHeight / 2) * 0.06;
+      img.style.transform = `translateY(${off}px) scale(1.12)`;
+    });
+  }
+  window.addEventListener('scroll', updateProjectParallax, { passive: true });
+  updateProjectParallax();
+
+  /* ---------- 9b. Craft statement word scrub ---------- */
+  const craftEl = $('#craftStatement');
+  if (craftEl) {
+    const words = craftEl.textContent.trim().split(/\s+/);
+    craftEl.innerHTML = words.map(w => `<span class="w">${w}</span>`).join(' ');
+    function updateCraft() {
+      const rect = craftEl.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const prog = Math.min(1, Math.max(0, (vh * 0.9 - rect.top) / (vh * 0.55)));
+      const ws = $$('.w', craftEl);
+      const lit = Math.floor(prog * ws.length);
+      ws.forEach((w, i) => w.classList.toggle('lit', i < lit));
+    }
+    window.addEventListener('scroll', updateCraft, { passive: true });
+    updateCraft();
   }
 
   /* ---------- 10. Parallax: hero + watermarks + footer giant ---------- */
