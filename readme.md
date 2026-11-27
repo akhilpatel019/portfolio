@@ -1,36 +1,26 @@
 Portfolio
 
-Welcome to my portfolio website. This site showcases my journey, skills, and projects — and it plays back.
+Welcome to my portfolio website. This site showcases my journey, skills, and projects with a professional, scroll-driven creative experience.
 
 Features
 Responsive Design: Built with mobile-first approach and responsive layouts.
-Smooth Scrolling: Enhanced user experience with smooth scrolling.
+Smooth Scrolling: Enhanced user experience with smooth scrolling (Lenis).
 Liquid Logo: Interactive logo with fluid animation.
 Typing Effect: Engaging introduction with animated text.
 Dark/Light Mode: Toggle between dark and light themes.
+3D Hero: Three.js kinetic constellation behind the hero content.
 
-Playground (new — try everything!)
-- Bubble Pop Game: floating skill bubbles in the hero. Pop them for points, unlock badges at 5 / 10 / 20 pops.
-- Physics Ball Canvas: click/drag to spawn rainbow balls with gravity slider, Ball Rain, Shake and Clear.
-- Catch The Dot: 15-second reaction game with a personal-best tracker.
-- Catch The Button: a runaway button that dodges your cursor 6 times before surrendering.
-- Confetti everywhere: click bursts, cursor sparkle trail, magnetic buttons with ripples.
-- Achievement toasts: unlock badges for scrolling, clicking, popping, staying, and more (saved in your browser).
-- Party Mode: Konami code (↑↑↓↓←→←→BA) or click the AP. logo 5 times — rainbow mode + confetti rain.
-- Play Dock: floating gamepad button (bottom-left) for instant confetti, party mode, bubble bonus and a shortcut to the Playground.
-- Skills: click any skill card to reveal mastery; Shuffle Skills randomizes the grid.
-- Projects: "Surprise Me" spotlights a random project with confetti.
-- Extras: scrolling marquee, spinning badge, time-based greeting, copy-email button, scroll progress bar, hero image 3D tilt.
-
-Dev Arcade (developer games, with XP + levels)
-- Bug Squash: squash moving bugs in 30s (golden bugs = +5). Best score saved.
-- Code Typing Sprint: type real code snippets fast — live WPM + accuracy.
-- Dev Quiz: 10 questions on HTML/CSS/JS/WordPress/Shopify with streak bonuses.
-- Tech Memory: flip-card matching for HTML/CSS/JS/WordPress/Shopify/GitHub icons.
-- Code Breaker: crack a 4-digit secret in 8 guesses with ●/◐ hints.
-- Fake Terminal: type `help`, `whoami`, `skills`, `hire`, `sudo`… in a hacker-style terminal.
-- XP system: every win earns XP and levels you up (Junior Dev → 10x Developer), saved in your browser.
-- Matrix-style code rain background behind the Arcade.
+Scroll Experience (professional + creative)
+- Scroll progress bar at the top.
+- Word-by-word text reveal in the About section as you scroll.
+- Animated stat counters (projects, technologies, CGPA, responsive).
+- Skill mastery bars that fill as the Skills section enters view.
+- Journey timeline line that draws itself with scroll progress.
+- Project cards that stack and scale as you scroll through Work.
+- Parallax on hero content, section watermarks and the footer giant logo.
+- Section titles with a subtle text-scramble reveal on enter.
+- Magnetic buttons, custom cursor, scrolling marquee, spinning badge.
+- Copy-email button in Contact.
 
 Tech Stack
 HTML5
@@ -44,7 +34,7 @@ No build process is required. Simply open the index.html file in your web browse
 
 index.html - Main entry point
 assets/css/style.css - Original stylesheet
-assets/css/playground.css - Interactive layer styles
+assets/css/scroll-play.css - Scroll interaction styles
 assets/js/main.js - Original JavaScript functionality
-assets/js/playground.js - Playground games + effects
+assets/js/scroll-play.js - Scroll-driven interactions
 assets/js/hero-scene.js - Three.js hero scene
