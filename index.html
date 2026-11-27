@@ -32,58 +32,14 @@ REMIX ICON
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
 
-    <!-- PLAYGROUND CSS (interactive layer) -->
-    <link rel="stylesheet" href="assets/css/scroll-play.css?v=ink-v2">
+    <!-- Scroll motion + editorial visual system -->
+    <link rel="stylesheet" href="assets/css/scroll-play.css?v=editorial-v1">
+    <link rel="stylesheet" href="assets/css/editorial-experience.css?v=editorial-v1">
 
 
 </head>
 
 <body>
-    <!-- =========================================
-PRELOADER
-========================================= -->
-    <div class="preloader">
-        <div class="preloader-panels">
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-        </div>
-        <div class="preloader-content">
-            <!-- Liquid wave Akhil -->
-            <div class="preloader-name">
-                <svg viewBox="0 0 600 200" preserveAspectRatio="xMidYMid meet" class="liquid-logo">
-                    <defs>
-                        <pattern id="wave-loader" x="0" y="0" width="100%" height="100%" patternUnits="userSpaceOnUse">
-                            <path class="wave-path"
-                                d="M-200 100 Q-100 70 0 100 T200 100 T400 100 T600 100 T800 100 T1000 100 T1200 100 V200 H-200z">
-                                <animateTransform attributeName="transform" begin="0s" dur="3s" type="translate"
-                                    from="0,0" to="400,0" repeatCount="indefinite" />
-                            </path>
-                        </pattern>
-                    </defs>
-                    <text text-anchor="middle" x="300" y="140" font-size="130" font-weight="900" class="logo-text-bg"
-                        style="fill: transparent; stroke: rgba(255,255,255,0.2); stroke-width: 2px;">AKHIL</text>
-                    <text text-anchor="middle" x="300" y="140" font-size="130" font-weight="900"
-                        fill="url(#wave-loader)">AKHIL</text>
-                </svg>
-            </div>
-
-            <div class="preloader-welcome">
-                <div class="text-mask">
-                    <h2 class="welcome-line">Welcome</h2>
-                </div>
-                <div class="text-mask">
-                    <h2 class="welcome-line">To My</h2>
-                </div>
-                <div class="text-mask">
-                    <h2 class="welcome-line">World.</h2>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
     <!-- =========================================
 HEADER
@@ -148,7 +104,7 @@ HEADER
                 </nav>
 
                 <!-- DARK MODE TOGGLE -->
-                <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                <button class="theme-toggle" aria-label="Toggle paper and night mode" title="Switch between paper and night mode">
                     <i class="ri-moon-fill dark-icon"></i>
                     <i class="ri-sun-fill light-icon"></i>
                 </button>
@@ -231,17 +187,12 @@ HERO SECTION
             <!-- LEFT -->
             <div class="hero-left">
 
-                <!-- 3D KINETIC NODE CANVAS -->
-                <canvas id="hero-webgl-canvas" class="hero-webgl-canvas" aria-hidden="true"></canvas>
-
                 <div class="hero-content hero-animate">
 
-                    <span class="hero-greeting"><i class="ri-hand-wave-line"></i><span class="hero-greeting-text">Welcome to my world</span></span>
+                    <span class="hero-greeting"><span class="availability-dot"></span><span class="hero-greeting-text">Available for select projects · Based in Rajkot</span></span>
 
                     <span class="hero-subtitle">
-
-                        HELLO
-
+                        FRONTEND DEVELOPER <span class="hero-dot">·</span> RAJKOT, INDIA
                     </span>
 
 
@@ -300,7 +251,11 @@ HERO SECTION
 
                     </div>
 
-                    <span class="hero-hint"><i class="ri-cursor-line"></i> Move or tap to stir the ink <span class="hint-divider">·</span> Scroll to explore</span>
+                    <span class="hero-hint"><i class="ri-cursor-line"></i> Move to stir the ink <span class="hint-divider">·</span> Tap to make a drop</span>
+                    <div class="ink-controls" aria-label="Choose pigment">
+                        <button type="button" class="ink-choice is-active" data-pigment="ink" aria-pressed="true">Ink</button>
+                        <button type="button" class="ink-choice" data-pigment="champagne" aria-pressed="false">Champagne</button>
+                    </div>
 
                 </div>
 
@@ -420,14 +375,22 @@ ABOUT SECTION
                 <h2 class="about-title">About Me.</h2>
             </div>
 
-            <!-- BIO -->
-            <div class="about-bio hero-animate">
-                <span class="about-subtitle">My Craft</span>
-                <p>I’m a Frontend, WordPress, and Shopify Developer passionate about building clean, responsive, and
-                    user-focused digital experiences. I combine technical precision with creative design to craft
-                    websites that are visually engaging, fast, and easy to navigate.</p>
-                <p>For me, a great website is more than just code. It’s about clarity, usability, performance, and
-                    creating experiences that leave a lasting impact.</p>
+            <!-- ABOUT PORTRAIT + BIO -->
+            <div class="about-editorial-layout">
+                <figure class="about-portrait hero-animate">
+                    <img src="assets/images/hero/hero-port-img.webp" alt="Akhil Patel, frontend and ecommerce developer">
+                    <figcaption>Based in Rajkot, Gujarat <span>·</span> Building for everywhere</figcaption>
+                </figure>
+                <div class="about-bio hero-animate">
+                    <span class="about-subtitle">A little about me</span>
+                    <h3 class="about-lead">Hi, I’m Akhil.</h3>
+                    <p>I’m a Frontend, WordPress, and Shopify Developer passionate about building clean, responsive, and
+                        user-focused digital experiences. I combine technical precision with creative design to craft
+                        websites that are visually engaging, fast, and easy to navigate.</p>
+                    <p>For me, a great website is more than just code. It’s about clarity, usability, performance, and
+                        creating experiences that leave a lasting impact.</p>
+                    <a class="about-email-link" href="mailto:akhilpatel99097@gmail.com">Say hello <i class="ri-arrow-up-right-line"></i></a>
+                </div>
             </div>
 
             <!-- SERVICES GRID -->
@@ -704,14 +667,15 @@ WORK SECTION
 
             <div class="about-header hero-animate">
                 <div class="about-watermark">05</div>
-                <h2 class="about-title">Projects.</h2>
+                <h2 class="about-title">Selected work.</h2>
             </div>
 
             <div class="about-bio hero-animate" style="text-align: center; margin-bottom: 40px;">
                 <span class="about-subtitle">Crafted With Care</span>
-                <p>A selection of recent websites I've designed and developed.</p>
+                <p>Thoughtful digital experiences, shaped from the first sketch to the final responsive detail.</p>
             </div>
 
+            <div class="selected-work-stage" id="selectedWorkStage" aria-live="polite"></div>
             <div class="work-grid">
 
                 <!-- Project 1 -->
@@ -941,17 +905,12 @@ FOOTER
     <!-- LENIS SMOOTH SCROLL -->
     <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 
-    <!-- THREE.JS (FOR HERO 3D KINETIC CONSTELLATION) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
     <!-- MAIN JS -->
     <script src="assets/js/main.js"></script>
 
-    <!-- HERO 3D SCENE -->
-    <script src="assets/js/hero-scene.js"></script>
-
-    <!-- SCROLL PLAY (professional scroll interactions) -->
-    <script src="assets/js/scroll-play.js?v=ink-v2"></script>
+    <!-- Editorial design interactions -->
+    <script src="assets/js/scroll-play.js?v=editorial-v1"></script>
+    <script src="assets/js/editorial-experience.js?v=editorial-v1"></script>
 </body>
 
 </html>

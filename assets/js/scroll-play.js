@@ -22,7 +22,17 @@
     const ctx = ink.getContext('2d');
     let inkW = 0, inkH = 0, inkDpr = 1, inkFrame = 0, lastPoint = null;
     const drops = [];
-    const palette = ['#d95736', '#ef8a5d', '#f5c58c', '#fff0d5'];
+    let palette = ['#d95736', '#ef8a5d', '#f5c58c', '#fff0d5'];
+    const inkPalette = ['#d95736', '#ef8a5d', '#f5c58c', '#fff0d5'];
+    const champagnePalette = ['#9f693f', '#d5a56f', '#f3d7ad', '#fff2d8'];
+    $$('.ink-choice').forEach(button => button.addEventListener('click', () => {
+      palette = button.dataset.pigment === 'champagne' ? champagnePalette : inkPalette;
+      $$('.ink-choice').forEach(choice => {
+        const active = choice === button;
+        choice.classList.toggle('is-active', active);
+        choice.setAttribute('aria-pressed', String(active));
+      });
+    }));
 
     function resizeInk() {
       const r = inkHost.getBoundingClientRect();
@@ -102,13 +112,6 @@
   }
   window.addEventListener('scroll', updateProgress, { passive: true });
   updateProgress();
-
-  /* ---------- 2. Time-based greeting ---------- */
-  const greetingEl = $('.hero-greeting-text');
-  if (greetingEl) {
-    const h = new Date().getHours();
-    greetingEl.textContent = (h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening') + ' — welcome to my world';
-  }
 
   /* ---------- 4. Scroll reveals (staggered) ---------- */
   const revealEls = $$('.service-item, .skill-item, .timeline-item, .project-card, .contact-card, .stat-item');

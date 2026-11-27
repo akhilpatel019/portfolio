@@ -1,41 +1,36 @@
-Portfolio
+# Akhil Patel — Portfolio
 
-Welcome to my portfolio website. This site showcases my journey, skills, and projects with a professional, scroll-driven creative experience.
+A personal portfolio for Akhil Patel, frontend, WordPress, and Shopify developer based in Rajkot, Gujarat. The visual direction is an editorial paper-and-ink experience with tactile pointer interactions and a curated selected-work index.
 
-Features
-Responsive Design: Built with mobile-first approach and responsive layouts.
-Smooth Scrolling: Enhanced user experience with smooth scrolling (Lenis).
-Liquid Logo: Interactive logo with fluid animation.
-Typing Effect: Engaging introduction with animated text.
-Dark/Light Mode: Toggle between dark and light themes.
-3D Hero: Three.js kinetic constellation behind the hero content.
+## Experience
 
-Scroll Experience (professional + creative)
-- Scroll progress bar at the top.
-- Interactive ink-on-paper hero canvas: move or tap to stir warm pigment into a soft trail.
-- Word-by-word text reveal in the About section as you scroll.
-- Animated stat counters (projects, technologies, CGPA, responsive).
-- Skill mastery bars that fill as the Skills section enters view.
-- Journey timeline line that draws itself with scroll progress.
-- Project cards that stack and scale as you scroll through Work.
-- Parallax on hero content, section watermarks and the footer giant logo.
-- Section titles with a subtle text-scramble reveal on enter.
-- Magnetic buttons, custom cursor, scrolling marquee, spinning badge.
-- Copy-email button in Contact.
+- Warm paper palette, oversized serif typography, compact menu overlay, and responsive portrait-led hero.
+- Interactive hero canvas: move to stir the pigment, tap/click to drop it, and switch between ink and champagne palettes.
+- Selected work feature panel: choose a project from the numbered index to change its image, description, and live-site link.
+- Editorial About section with portrait, capabilities, stats, skills, and career timeline.
+- Scroll-driven reveals, counters, skill bars, parallax, and section transitions; honors reduced-motion preferences.
+- Paper/night theme toggle, responsive layouts, accessible buttons, and original project content.
 
-Tech Stack
-HTML5
-CSS3
-JavaScript (ES6+)
-Remix Icon (Icons)
-Three.js (hero constellation) + Lenis (smooth scroll)
+## Tech
 
-Getting Started
-No build process is required. Simply open the index.html file in your web browser, or serve the folder (e.g. `python3 -m http.server`).
+HTML5, CSS3, vanilla JavaScript, Lenis smooth scrolling, Remix Icon. No build step is required.
 
-index.html - Main entry point
-assets/css/style.css - Original stylesheet
-assets/css/scroll-play.css - Scroll interaction styles
-assets/js/main.js - Original JavaScript functionality
-assets/js/scroll-play.js - Scroll-driven interactions
-assets/js/hero-scene.js - Three.js hero scene
+## Run locally
+
+Serve the repository root with any static file server, for example:
+
+```sh
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000`.
+
+## Main files
+
+- `index.html` — page structure and portfolio content
+- `assets/css/style.css` — base styling
+- `assets/css/scroll-play.css` — scroll and ink interaction styles
+- `assets/css/editorial-experience.css` — paper/editorial visual system
+- `assets/js/main.js` — navigation, theme, cursor and smooth scrolling
+- `assets/js/scroll-play.js` — scroll reveals, counters, and interactive ink
+- `assets/js/editorial-experience.js` — selected-work feature/index interaction
