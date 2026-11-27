@@ -37,7 +37,7 @@
       if (drops.length > 90) drops.splice(0, drops.length - 90);
       const angle = Math.atan2(dy, dx) + (Math.random() - .5) * 2.3;
       const speed = (0.25 + Math.random() * 1.1) * scale;
-      const life = 45 + Math.random() * 55;
+      const life = 90 + Math.random() * 65;
       drops.push({ x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
         r: (3 + Math.random() * 13) * scale, life, maxLife: life,
         color: palette[Math.floor(Math.random() * palette.length)], spin: Math.random() * 6.28 });
@@ -75,8 +75,10 @@
         g.addColorStop(0, d.color + 'cc');
         g.addColorStop(.42, d.color + '70');
         g.addColorStop(1, d.color + '00');
+        ctx.globalAlpha = fade;
         ctx.fillStyle = g;
         ctx.beginPath(); ctx.arc(d.x, d.y, radius, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = 1;
       }
       if (drops.length) inkFrame = requestAnimationFrame(paintInk);
       else inkFrame = 0;
