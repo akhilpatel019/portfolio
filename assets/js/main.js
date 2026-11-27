@@ -183,23 +183,10 @@ heroElements.forEach((element) => {
 });
 
 /*=========================================
-LENIS SMOOTH SCROLL
+NATIVE BROWSER SCROLL
 =========================================*/
-let lenis;
-if (window.innerWidth > 992) {
-    lenis = new Lenis({
-        lerp: 0.05, // Lower value = smoother, floatier momentum
-        smoothWheel: true,
-        wheelMultiplier: 0.8, // Decreased to make wheel steps feel more fluid
-    });
-
-    function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-}
+// Keep native wheel/touch scrolling so the long editorial page remains direct and responsive.
+const lenis = null;
 
 /*=========================================
 SCROLL SPY & MENU CLOSE
