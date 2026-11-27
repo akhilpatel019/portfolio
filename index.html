@@ -33,7 +33,7 @@ REMIX ICON
     <link rel="stylesheet" href="assets/css/style.css">
 
     <!-- PLAYGROUND CSS (interactive layer) -->
-    <link rel="stylesheet" href="assets/css/playground.css">
+    <link rel="stylesheet" href="assets/css/scroll-play.css">
 
 
 </head>
@@ -140,14 +140,6 @@ HEADER
                         </li>
 
                         <li>
-                            <a href="#playground">Playground</a>
-                        </li>
-
-                        <li>
-                            <a href="#arcade">Arcade</a>
-                        </li>
-
-                        <li>
                             <a href="#contact">Contact</a>
                         </li>
 
@@ -210,14 +202,6 @@ MOBILE MENU
 
                 <li>
                     <a href="#work">Work</a>
-                </li>
-
-                <li>
-                    <a href="#playground">Playground</a>
-                </li>
-
-                <li>
-                    <a href="#arcade">Arcade</a>
                 </li>
 
                 <li>
@@ -316,13 +300,9 @@ HERO SECTION
 
                     </div>
 
-                    <span class="hero-hint"><i class="ri-cursor-line"></i> Psst — pop the floating bubbles, click my name, move your mouse. This page plays back.</span>
+                    <span class="hero-hint"><i class="ri-arrow-down-line"></i> Scroll to explore — every section moves with you.</span>
 
                 </div>
-
-                <!-- BUBBLE POP GAME -->
-                <div class="hero-bubbles" id="heroBubbles" aria-hidden="true"></div>
-                <div class="bubble-score" id="bubbleScore"><i class="ri-bubble-chart-line"></i> Score <b id="bubbleScoreVal">0</b></div>
 
             </div>
 
@@ -480,6 +460,26 @@ ABOUT SECTION
                 </div>
 
             </div>
+
+            <!-- STATS (scroll counters) -->
+            <div class="stats-row hero-animate">
+                <div class="stat-item">
+                    <span class="stat-num" data-count="7" data-suffix="+">0</span>
+                    <span class="stat-label">Projects Delivered</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-num" data-count="11" data-suffix="">0</span>
+                    <span class="stat-label">Technologies</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-num" data-count="8.44" data-decimals="2" data-suffix="">0</span>
+                    <span class="stat-label">BCA CGPA</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-num" data-count="100" data-suffix="%">0</span>
+                    <span class="stat-label">Responsive &amp; Tested</span>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -498,11 +498,7 @@ SKILLS SECTION
                 </div>
                 <div class="about-bio hero-animate" style="text-align: center; margin-bottom: 40px;">
                     <span class="about-subtitle">Skills That Deliver Results</span>
-                    <p style="font-size:.95rem;">Tip: click any skill card to reveal its mastery level.</p>
-                </div>
-
-                <div class="shuffle-wrap hero-animate">
-                    <button class="shuffle-btn" id="shuffleSkills"><i class="ri-shuffle-line"></i> Shuffle Skills</button>
+                    
                 </div>
 
                 <div class="skills-grid">
@@ -697,10 +693,6 @@ WORK SECTION
                 <p>A selection of recent websites I've designed and developed.</p>
             </div>
 
-            <div class="surprise-wrap hero-animate">
-                <button class="surprise-btn" id="surpriseProject"><i class="ri-dice-line"></i> Surprise Me — Random Project</button>
-            </div>
-
             <div class="work-grid">
 
                 <!-- Project 1 -->
@@ -814,227 +806,13 @@ WORK SECTION
     </section>
 
     <!-- =========================================
-PLAYGROUND SECTION (interactive games)
-========================================= -->
-    <section class="playground-section" id="playground">
-        <div class="about-container">
-
-            <div class="about-header hero-animate">
-                <div class="about-watermark">05</div>
-                <h2 class="about-title">Playground.</h2>
-            </div>
-
-            <div class="about-bio hero-animate" style="text-align: center; margin-bottom: 60px;">
-                <span class="about-subtitle">Don't Just Scroll — Play</span>
-                <p>This is my interactive corner. Draw with physics balls, catch the dot against the clock, and try to catch a button that does not want to be caught. Warning: highly addictive.</p>
-                <p style="font-size:.85rem; margin-top:12px; opacity:.75;">Secret: type the Konami code (↑ ↑ ↓ ↓ ← → ← → B A) or click the AP. logo 5 times for Party Mode.</p>
-            </div>
-
-            <div class="playground-grid">
-
-                <!-- Physics canvas -->
-                <div class="play-card hero-animate">
-                    <h3><i class="ri-bubble-chart-fill"></i> Physics Ball Canvas</h3>
-                    <p class="play-sub">Click or drag inside the canvas to spawn rainbow balls. They bounce, roll and pile up. Change gravity, rain balls, or shake the whole thing.</p>
-                    <canvas id="play-canvas"></canvas>
-                    <div class="play-controls">
-                        <button class="play-btn" id="ballRainBtn"><i class="ri-rainy-line"></i> Ball Rain</button>
-                        <button class="play-btn ghost" id="ballShakeBtn"><i class="ri-shake-line"></i> Shake</button>
-                        <button class="play-btn ghost" id="ballClearBtn"><i class="ri-eraser-line"></i> Clear</button>
-                        <label class="play-slider">Gravity <input type="range" id="gravitySlider" min="-0.3" max="1" step="0.05" value="0.35"> <span id="gravityVal">0.35</span></label>
-                        <span class="play-stat">Balls: <b id="ballCount">0</b></span>
-                    </div>
-                </div>
-
-                <!-- Reaction game + runaway -->
-                <div style="display:flex; flex-direction:column; gap:28px;">
-                    <div class="play-card hero-animate">
-                        <h3><i class="ri-crosshair-line"></i> Catch The Dot</h3>
-                        <p class="play-sub">The dot teleports every time you catch it. You have 15 seconds. How many can you catch?</p>
-                        <div class="reaction-box" id="reactionBox">
-                            <div class="reaction-msg" id="reactionMsg">Press start, then catch the dot as many times as you can!</div>
-                            <div class="reaction-dot" id="reactionDot"></div>
-                        </div>
-                        <div class="reaction-hud">
-                            <span>Score: <b id="reactionScore">0</b></span>
-                            <span>Time: <b id="reactionTime">15</b>s</span>
-                        </div>
-                        <div class="play-controls">
-                            <button class="play-btn" id="reactionStart"><i class="ri-play-line"></i> Start Game</button>
-                        </div>
-                    </div>
-
-                    <div class="play-card hero-animate">
-                        <h3><i class="ri-footprint-line"></i> Catch The Button</h3>
-                        <p class="play-sub">This button is scared of you. It will run away 6 times. Catch it to win.</p>
-                        <div class="runaway-zone" id="runawayZone">
-                            <button class="runaway-btn" id="runawayBtn">Catch me!</button>
-                        </div>
-                        <p class="runaway-msg" id="runawayMsg">Go on, try to click it.</p>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </section>
-
-    <!-- =========================================
-DEV ARCADE (developer games)
-========================================= -->
-    <section class="arcade-section" id="arcade">
-        <canvas id="code-rain" aria-hidden="true"></canvas>
-        <div class="about-container">
-
-            <div class="about-header hero-animate">
-                <div class="about-watermark">06</div>
-                <h2 class="about-title">Dev Arcade.</h2>
-            </div>
-
-            <div class="about-bio hero-animate" style="text-align: center; margin-bottom: 36px;">
-                <span class="about-subtitle">Games For Developers</span>
-                <p>Squash bugs, type code at speed, crack the quiz, match the tech stack and break the code. Every win earns XP — level up as you play.</p>
-            </div>
-
-            <!-- XP HUD -->
-            <div class="xp-hud hero-animate">
-                <div class="xp-info">
-                    <span class="xp-level" id="xpLevel">LVL 1 · Junior Dev</span>
-                    <span class="xp-total"><b id="xpTotal">0</b> XP</span>
-                </div>
-                <div class="xp-bar"><div class="xp-fill" id="xpFill"></div></div>
-                <p class="xp-hint">Earn XP: Bug Squash +10/bug · Typing +5/line · Quiz +20/correct · Memory +30/win · Code Breaker +50/win</p>
-            </div>
-
-            <div class="arcade-grid">
-
-                <!-- BUG SQUASH -->
-                <div class="arcade-card hero-animate">
-                    <div class="arcade-head">
-                        <h3><i class="ri-bug-line"></i> Bug Squash</h3>
-                        <span class="arcade-tag">DEBUG</span>
-                    </div>
-                    <p class="play-sub">Bugs are loose in production! Squash as many as you can in 30 seconds. Golden bugs = +5.</p>
-                    <div class="bug-box" id="bugBox">
-                        <div class="arcade-msg" id="bugMsg">Press start to deploy the debugger.</div>
-                    </div>
-                    <div class="arcade-hud">
-                        <span>Squashed: <b id="bugScore">0</b></span>
-                        <span>Time: <b id="bugTime">30</b>s</span>
-                        <span>Best: <b id="bugBest">0</b></span>
-                    </div>
-                    <div class="play-controls">
-                        <button class="play-btn" id="bugStart"><i class="ri-play-line"></i> Start Debugging</button>
-                    </div>
-                </div>
-
-                <!-- TYPING SPRINT -->
-                <div class="arcade-card hero-animate">
-                    <div class="arcade-head">
-                        <h3><i class="ri-code-s-slash-line"></i> Code Typing Sprint</h3>
-                        <span class="arcade-tag">SPEED</span>
-                    </div>
-                    <p class="play-sub">Type the code snippet exactly as shown. Finish lines to earn XP. Watch your WPM climb.</p>
-                    <div class="type-display" id="typeDisplay">Press start, then type the code here…</div>
-                    <input class="type-input" id="typeInput" type="text" placeholder="Start typing the code…" autocomplete="off" autocapitalize="off" spellcheck="false" disabled>
-                    <div class="arcade-hud">
-                        <span>WPM: <b id="typeWpm">0</b></span>
-                        <span>Lines: <b id="typeLines">0</b></span>
-                        <span>Accuracy: <b id="typeAcc">100</b>%</span>
-                    </div>
-                    <div class="play-controls">
-                        <button class="play-btn" id="typeStart"><i class="ri-play-line"></i> Start Sprint</button>
-                    </div>
-                </div>
-
-                <!-- DEV QUIZ -->
-                <div class="arcade-card hero-animate">
-                    <div class="arcade-head">
-                        <h3><i class="ri-questionnaire-line"></i> Dev Quiz</h3>
-                        <span class="arcade-tag">KNOWLEDGE</span>
-                    </div>
-                    <p class="play-sub">10 questions on HTML, CSS, JS, WordPress & Shopify. Streaks earn bonus XP.</p>
-                    <div class="quiz-progress"><div class="quiz-fill" id="quizFill"></div></div>
-                    <div class="quiz-q" id="quizQ">Press start to begin the quiz.</div>
-                    <div class="quiz-opts" id="quizOpts"></div>
-                    <div class="arcade-hud">
-                        <span>Score: <b id="quizScore">0</b></span>
-                        <span>Streak: <b id="quizStreak">0</b> 🔥</span>
-                        <span>Q: <b id="quizNum">0/10</b></span>
-                    </div>
-                    <div class="play-controls">
-                        <button class="play-btn" id="quizStart"><i class="ri-play-line"></i> Start Quiz</button>
-                    </div>
-                </div>
-
-                <!-- MEMORY MATCH -->
-                <div class="arcade-card hero-animate">
-                    <div class="arcade-head">
-                        <h3><i class="ri-layout-grid-line"></i> Tech Memory</h3>
-                        <span class="arcade-tag">MEMORY</span>
-                    </div>
-                    <p class="play-sub">Flip the cards and match the tech icons. 6 pairs. Fewer moves = more glory.</p>
-                    <div class="memory-grid" id="memoryGrid"></div>
-                    <div class="arcade-hud">
-                        <span>Moves: <b id="memMoves">0</b></span>
-                        <span>Pairs: <b id="memPairs">0/6</b></span>
-                        <span>Time: <b id="memTime">0</b>s</span>
-                    </div>
-                    <div class="play-controls">
-                        <button class="play-btn" id="memStart"><i class="ri-play-line"></i> Shuffle & Start</button>
-                    </div>
-                </div>
-
-                <!-- CODE BREAKER -->
-                <div class="arcade-card hero-animate">
-                    <div class="arcade-head">
-                        <h3><i class="ri-lock-line"></i> Code Breaker</h3>
-                        <span class="arcade-tag">HACK</span>
-                    </div>
-                    <p class="play-sub">Crack the 4-digit secret code in 8 guesses. ● = right digit, right place · ◐ = right digit, wrong place.</p>
-                    <div class="breaker-display" id="breakerDisplay">_ _ _ _</div>
-                    <div class="breaker-log" id="breakerLog">Press New Code to start hacking.</div>
-                    <div class="breaker-pad" id="breakerPad">
-                        <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
-                        <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
-                        <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
-                        <button data-k="C" class="pad-clear">⌫</button><button data-k="0">0</button><button data-k="G" class="pad-go">GO</button>
-                    </div>
-                    <div class="arcade-hud">
-                        <span>Attempts: <b id="breakerTries">0/8</b></span>
-                        <span>Wins: <b id="breakerWins">0</b></span>
-                    </div>
-                    <div class="play-controls">
-                        <button class="play-btn" id="breakerNew"><i class="ri-refresh-line"></i> New Code</button>
-                    </div>
-                </div>
-
-                <!-- TERMINAL -->
-                <div class="arcade-card hero-animate">
-                    <div class="arcade-head">
-                        <h3><i class="ri-terminal-line"></i> Fake Terminal</h3>
-                        <span class="arcade-tag">HACKER</span>
-                    </div>
-                    <p class="play-sub">Type <b>help</b> to see commands. Try <b>whoami</b>, <b>skills</b>, <b>hire</b>, <b>sudo</b>…</p>
-                    <div class="terminal" id="terminal">
-                        <div class="term-out" id="termOut">AkhilOS v2.0 — type "help" to begin.<br></div>
-                        <div class="term-line"><span class="term-prompt">akhil@dev:~$</span><input class="term-input" id="termInput" type="text" placeholder="type a command…" autocomplete="off" spellcheck="false"></div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </section>
-
-    <!-- =========================================
 CONTACT SECTION
 ========================================= -->
     <section class="contact-section" id="contact">
         <div class="about-container">
 
             <div class="about-header hero-animate">
-                <div class="about-watermark">07</div>
+                <div class="about-watermark">05</div>
                 <h2 class="about-title">Contact.</h2>
             </div>
 
@@ -1098,8 +876,6 @@ FOOTER
                         <li><a href="#skills">Skills</a></li>
                         <li><a href="#journey">Journey</a></li>
                         <li><a href="#work">Work</a></li>
-                        <li><a href="#playground">Playground</a></li>
-                        <li><a href="#arcade">Arcade</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
@@ -1143,17 +919,6 @@ FOOTER
         <i class="ri-arrow-up-line"></i>
     </a>
 
-    <!-- PLAY DOCK (floating fun menu) -->
-    <div class="play-dock">
-        <div class="play-menu" id="playMenu">
-            <button id="dockConfetti"><i class="ri-confetti-line"></i> Confetti Rain</button>
-            <button id="partyBtn"><i class="ri-party-line"></i> Party Mode</button>
-            <button id="dockBubbles"><i class="ri-bubble-chart-line"></i> Bubble Bonus</button>
-            <button id="dockScroll"><i class="ri-gamepad-line"></i> Go to Playground</button>
-        </div>
-        <button class="play-dock-btn" id="playDockBtn" aria-label="Open play menu"><i class="ri-gamepad-fill"></i></button>
-    </div>
-
     <!-- LENIS SMOOTH SCROLL -->
     <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 
@@ -1166,8 +931,8 @@ FOOTER
     <!-- HERO 3D SCENE -->
     <script src="assets/js/hero-scene.js"></script>
 
-    <!-- PLAYGROUND (interactive layer) -->
-    <script src="assets/js/playground.js"></script>
+    <!-- SCROLL PLAY (professional scroll interactions) -->
+    <script src="assets/js/scroll-play.js"></script>
 </body>
 
 </html>
