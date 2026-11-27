@@ -12,6 +12,7 @@ Dark/Light Mode: Toggle between dark and light themes.
 
 Scroll Experience (professional + creative)
 - Scroll progress bar at the top.
+- Interactive ink-on-paper hero canvas: move or tap to stir warm pigment into a soft trail.
 - Word-by-word text reveal in the About section as you scroll.
 - Animated stat counters (projects, technologies, CGPA, responsive).
 - Skill mastery bars that fill as the Skills section enters view.
