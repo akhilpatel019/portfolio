@@ -619,3 +619,366 @@
     }
   }, 4500);
 })();
+
+/* ============================================================
+   DEV ARCADE — developer games + XP system
+   ============================================================ */
+(function () {
+  'use strict';
+  const $ = (s, c) => (c || document).querySelector(s);
+  const $$ = (s, c) => Array.from((c || document).querySelectorAll(s));
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const randInt = (a, b) => Math.floor(rand(a, b + 1));
+
+  /* ---------- XP SYSTEM ---------- */
+  let xp = parseInt(localStorage.getItem('ap_xp') || '0', 10);
+  const LEVELS = [
+    { min: 0, name: 'Junior Dev' }, { min: 100, name: 'Frontend Dev' },
+    { min: 250, name: 'Full-Stack Dev' }, { min: 500, name: 'Senior Dev' },
+    { min: 800, name: 'Code Wizard' }, { min: 1200, name: '10x Developer' }
+  ];
+  function renderXP() {
+    const total = $('#xpTotal'), fill = $('#xpFill'), lvl = $('#xpLevel');
+    if (total) total.textContent = xp;
+    let cur = LEVELS[0], next = null;
+    for (let i = 0; i < LEVELS.length; i++) {
+      if (xp >= LEVELS[i].min) cur = LEVELS[i];
+      if (LEVELS[i].min > xp && !next) next = LEVELS[i];
+    }
+    if (lvl) lvl.textContent = `LVL ${LEVELS.indexOf(cur) + 1} · ${cur.name}`;
+    if (fill) {
+      const pct = next ? ((xp - cur.min) / (next.min - cur.min)) * 100 : 100;
+      fill.style.width = Math.min(100, pct) + '%';
+    }
+  }
+  function addXP(n, why) {
+    xp += n;
+    localStorage.setItem('ap_xp', String(xp));
+    renderXP();
+    // floating +XP feedback near HUD
+    const hud = $('.xp-hud');
+    if (hud) {
+      const f = document.createElement('div');
+      f.textContent = `+${n} XP${why ? ' · ' + why : ''}`;
+      f.style.cssText = 'position:absolute;right:26px;top:-14px;background:#00e676;color:#000;font-weight:800;font-size:.8rem;padding:5px 12px;border-radius:999px;animation:trailFade 1.2s ease-out forwards;z-index:5;font-family:Courier New,monospace';
+      hud.style.position = 'relative';
+      hud.appendChild(f);
+      setTimeout(() => f.remove(), 1250);
+    }
+  }
+  renderXP();
+
+  /* ---------- CODE RAIN BACKGROUND ---------- */
+  const rain = $('#code-rain');
+  if (rain && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const rctx = rain.getContext('2d');
+    let RW, RH, drops = [];
+    const CHARS = '01<>/{}[]();=+-*&%$#@!ABCDEF';
+    function sizeRain() {
+      const sec = $('.arcade-section');
+      RW = rain.width = sec.clientWidth; RH = rain.height = sec.clientHeight;
+      const cols = Math.floor(RW / 18);
+      drops = Array.from({ length: cols }, () => randInt(0, -40));
+    }
+    sizeRain();
+    window.addEventListener('resize', sizeRain, { passive: true });
+    let rainVisible = false;
+    new IntersectionObserver((en) => { rainVisible = en[0].isIntersecting; }, { threshold: 0.02 }).observe(rain);
+    (function rainLoop() {
+      requestAnimationFrame(rainLoop);
+      if (!rainVisible) return;
+      rctx.fillStyle = 'rgba(5,5,5,0.08)';
+      rctx.fillRect(0, 0, RW, RH);
+      rctx.font = '15px Courier New';
+      drops.forEach((y, i) => {
+        const ch = CHARS[Math.floor(Math.random() * CHARS.length)];
+        rctx.fillStyle = Math.random() > 0.97 ? '#00e676' : 'rgba(0,230,118,0.5)';
+        rctx.fillText(ch, i * 18, y * 18);
+        drops[i] = y * 18 > RH && Math.random() > 0.976 ? 0 : y + 1;
+      });
+    })();
+  }
+
+  /* ---------- 1. BUG SQUASH ---------- */
+  const bugBox = $('#bugBox'), bugMsg = $('#bugMsg');
+  let bugScore = 0, bugTime = 30, bugTimer = null, bugSpawn = null, bugOn = false;
+  let bugBest = parseInt(localStorage.getItem('ap_bug_best') || '0', 10);
+  const bugBestEl = $('#bugBest'); if (bugBestEl) bugBestEl.textContent = bugBest;
+  const BUG_ICONS = ['🐛', '🪲', '🐜', '🦗'];
+  function spawnBug() {
+    if (!bugOn || !bugBox) return;
+    const b = document.createElement('div');
+    const golden = Math.random() < 0.15;
+    b.className = 'bug' + (golden ? ' golden' : '');
+    b.textContent = golden ? '⭐' : BUG_ICONS[randInt(0, BUG_ICONS.length - 1)];
+    const bw = bugBox.clientWidth - 56, bh = bugBox.clientHeight - 56;
+    b.style.left = rand(4, Math.max(10, bw)) + 'px';
+    b.style.top = rand(4, Math.max(10, bh)) + 'px';
+    b.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      const pts = golden ? 5 : 1;
+      bugScore += pts;
+      const s = $('#bugScore'); if (s) s.textContent = bugScore;
+      b.classList.add('squashed');
+      addXP(golden ? 5 : 1, golden ? 'Golden bug!' : 'Bug squashed');
+      setTimeout(() => b.remove(), 300);
+    });
+    bugBox.appendChild(b);
+    setTimeout(() => { if (b.parentNode) b.remove(); }, 2600);
+  }
+  function endBugs() {
+    bugOn = false;
+    clearInterval(bugTimer); clearInterval(bugSpawn);
+    $$('.bug', bugBox).forEach(b => b.remove());
+    if (bugScore > bugBest) { bugBest = bugScore; localStorage.setItem('ap_bug_best', String(bugBest)); if (bugBestEl) bugBestEl.textContent = bugBest; }
+    if (bugMsg) { bugMsg.style.display = 'flex'; bugMsg.textContent = `Debugger finished! You squashed ${bugScore} bugs. Best: ${bugBest}. Press start to debug again.`; }
+    if (bugScore >= 15) addXP(20, 'Bug Squash master');
+  }
+  const bugStart = $('#bugStart');
+  if (bugStart) bugStart.addEventListener('click', () => {
+    bugScore = 0; bugTime = 30; bugOn = true;
+    const s = $('#bugScore'), t = $('#bugTime');
+    if (s) s.textContent = '0'; if (t) t.textContent = '30';
+    if (bugMsg) bugMsg.style.display = 'none';
+    $$('.bug', bugBox).forEach(b => b.remove());
+    spawnBug(); spawnBug();
+    clearInterval(bugSpawn); bugSpawn = setInterval(spawnBug, 750);
+    clearInterval(bugTimer);
+    bugTimer = setInterval(() => {
+      bugTime--;
+      const tt = $('#bugTime'); if (tt) tt.textContent = String(bugTime);
+      if (bugTime <= 0) endBugs();
+    }, 1000);
+  });
+
+  /* ---------- 2. CODE TYPING SPRINT ---------- */
+  const SNIPPETS = [
+    'const x = 42;', 'function hi() { return "hi"; }',
+    'if (bug) { fix(); }', 'let arr = [1,2,3];',
+    'div { color: red; }', 'npm install react',
+    'git push origin main', 'console.log("hello");',
+    'a = b + c;', 'return true;'
+  ];
+  const typeDisplay = $('#typeDisplay'), typeInput = $('#typeInput');
+  let typeOn = false, typeIdx = 0, typeStartT = 0, typeLines = 0, typeChars = 0, typeErrors = 0, typeTimer = null;
+  function renderType() {
+    const target = SNIPPETS[typeIdx % SNIPPETS.length];
+    const typed = typeInput.value;
+    let html = '';
+    for (let i = 0; i < target.length; i++) {
+      const cls = i < typed.length ? (typed[i] === target[i] ? 't-ok' : 't-bad') : (i === typed.length ? 't-next' : '');
+      html += `<span class="${cls}">${target[i] === ' ' ? '&nbsp;' : target[i]}</span>`;
+    }
+    typeDisplay.innerHTML = html;
+  }
+  function updateTypeStats() {
+    const mins = (Date.now() - typeStartT) / 60000 || 0.01;
+    const wpm = Math.round((typeChars / 5) / mins);
+    const acc = typeChars + typeErrors > 0 ? Math.round((typeChars / (typeChars + typeErrors)) * 100) : 100;
+    const w = $('#typeWpm'), l = $('#typeLines'), a = $('#typeAcc');
+    if (w) w.textContent = wpm; if (l) l.textContent = typeLines; if (a) a.textContent = acc;
+  }
+  const typeStart = $('#typeStart');
+  if (typeStart) typeStart.addEventListener('click', () => {
+    typeOn = true; typeIdx = randInt(0, SNIPPETS.length - 1); typeLines = 0; typeChars = 0; typeErrors = 0;
+    typeStartT = Date.now();
+    typeInput.value = ''; typeInput.disabled = false; typeInput.focus();
+    renderType(); updateTypeStats();
+    clearInterval(typeTimer); typeTimer = setInterval(updateTypeStats, 500);
+  });
+  if (typeInput) typeInput.addEventListener('input', () => {
+    if (!typeOn) return;
+    const target = SNIPPETS[typeIdx % SNIPPETS.length];
+    const typed = typeInput.value;
+    // count errors on new chars
+    if (typed.length > 0 && typed[typed.length - 1] !== target[typed.length - 1]) typeErrors++;
+    if (typed === target) {
+      typeLines++; typeChars += target.length;
+      addXP(5, 'Code line typed');
+      typeIdx++;
+      typeInput.value = '';
+      renderType(); updateTypeStats();
+    } else {
+      renderType(); updateTypeStats();
+    }
+  });
+
+  /* ---------- 3. DEV QUIZ ---------- */
+  const QUIZ = [
+    { q: 'What does <code>&lt;div&gt;</code> stand for?', o: ['Divide', 'Division (block container)', 'Digital View', 'Data Value'], a: 1 },
+    { q: 'Which symbol starts a comment in CSS?', o: ['//', '#', '/* */', '<!-- -->'], a: 2 },
+    { q: 'In JS, <code>let</code> vs <code>var</code> — what is the key difference?', o: ['No difference', 'let is block-scoped, var is function-scoped', 'let is faster', 'var is newer'], a: 1 },
+    { q: 'What does <code>npm</code> stand for?', o: ['Node Package Manager', 'New Program Module', 'Network Protocol Manager', 'Node Process Machine'], a: 0 },
+    { q: 'In WordPress, what is a "theme"?', o: ['A plugin', 'The design/layout layer of the site', 'A database table', 'A user role'], a: 1 },
+    { q: 'What does <code>git push</code> do?', o: ['Deletes code', 'Uploads local commits to remote', 'Creates a branch', 'Merges branches'], a: 1 },
+    { q: 'Which tag creates a hyperlink?', o: ['&lt;link&gt;', '&lt;a&gt;', '&lt;href&gt;', '&lt;url&gt;'], a: 1 },
+    { q: 'What is Shopify\'s templating language called?', o: ['PHP', 'Liquid', 'Twig', 'Handlebars'], a: 1 },
+    { q: 'What does <code>console.log()</code> do?', o: ['Logs you out', 'Prints to the browser console', 'Creates a log file', 'Shows an error'], a: 1 },
+    { q: 'Which CSS property makes text centered?', o: ['align: center', 'text-align: center', 'center: true', 'margin: center'], a: 1 }
+  ];
+  let quizIdx = 0, quizScore = 0, quizStreak = 0, quizOn = false;
+  function renderQuiz() {
+    const item = QUIZ[quizIdx];
+    const q = $('#quizQ'), opts = $('#quizOpts');
+    if (!item) return;
+    q.innerHTML = item.q;
+    opts.innerHTML = '';
+    item.o.forEach((opt, i) => {
+      const b = document.createElement('button');
+      b.className = 'quiz-opt';
+      b.textContent = opt;
+      b.addEventListener('click', () => {
+        $$('.quiz-opt', opts).forEach(x => x.disabled = true);
+        if (i === item.a) {
+          b.classList.add('correct');
+          quizScore++; quizStreak++;
+          addXP(20 + (quizStreak >= 3 ? 10 : 0), quizStreak >= 3 ? `Streak x${quizStreak}!` : 'Correct answer');
+        } else {
+          b.classList.add('wrong');
+          opts.children[item.a].classList.add('correct');
+          quizStreak = 0;
+        }
+        const s = $('#quizScore'), st = $('#quizStreak'), n = $('#quizNum'), f = $('#quizFill');
+        if (s) s.textContent = quizScore; if (st) st.textContent = quizStreak;
+        if (n) n.textContent = `${quizIdx + 1}/10`; if (f) f.style.width = ((quizIdx + 1) / 10 * 100) + '%';
+        setTimeout(() => {
+          quizIdx++;
+          if (quizIdx >= QUIZ.length) {
+            quizOn = false;
+            q.innerHTML = `Quiz complete! You scored <b>${quizScore}/10</b>. ${quizScore >= 8 ? '🏆 Senior Dev energy!' : quizScore >= 5 ? '💪 Solid work — keep going!' : '📚 Hit the docs and retry!'}`;
+            opts.innerHTML = '';
+            if (quizScore >= 8) addXP(30, 'Quiz ace');
+          } else renderQuiz();
+        }, 1100);
+      });
+      opts.appendChild(b);
+    });
+  }
+  const quizStart = $('#quizStart');
+  if (quizStart) quizStart.addEventListener('click', () => {
+    quizIdx = 0; quizScore = 0; quizStreak = 0; quizOn = true;
+    const s = $('#quizScore'), st = $('#quizStreak'), n = $('#quizNum'), f = $('#quizFill');
+    if (s) s.textContent = '0'; if (st) st.textContent = '0'; if (n) n.textContent = '1/10'; if (f) f.style.width = '0%';
+    renderQuiz();
+  });
+
+  /* ---------- 4. TECH MEMORY ---------- */
+  const MEM_ICONS = ['ri-html5-fill', 'ri-css3-fill', 'ri-javascript-fill', 'ri-wordpress-fill', 'ri-shopping-bag-fill', 'ri-github-fill'];
+  let memFirst = null, memLock = false, memMoves = 0, memPairs = 0, memTime = 0, memTimer = null, memOn = false;
+  function buildMemory() {
+    const grid = $('#memoryGrid');
+    grid.innerHTML = '';
+    memFirst = null; memLock = false; memMoves = 0; memPairs = 0; memTime = 0; memOn = true;
+    const deck = [...MEM_ICONS, ...MEM_ICONS].sort(() => Math.random() - 0.5);
+    deck.forEach(icon => {
+      const card = document.createElement('button');
+      card.className = 'mem-card';
+      card.dataset.icon = icon;
+      card.innerHTML = `<div class="mem-inner"><div class="mem-face mem-back"><i class="ri-code-s-slash-line"></i></div><div class="mem-face mem-front"><i class="${icon}"></i></div></div>`;
+      card.addEventListener('click', () => {
+        if (memLock || card.classList.contains('flipped')) return;
+        card.classList.add('flipped');
+        if (!memFirst) { memFirst = card; return; }
+        memMoves++;
+        const m = $('#memMoves'); if (m) m.textContent = memMoves;
+        if (memFirst.dataset.icon === card.dataset.icon) {
+          memFirst.classList.add('matched'); card.classList.add('matched');
+          memPairs++;
+          const p = $('#memPairs'); if (p) p.textContent = `${memPairs}/6`;
+          memFirst = null;
+          if (memPairs === 6) {
+            memOn = false; clearInterval(memTimer);
+            addXP(30, `Memory cleared in ${memMoves} moves`);
+          }
+        } else {
+          memLock = true;
+          const first = memFirst; memFirst = null;
+          setTimeout(() => { first.classList.remove('flipped'); card.classList.remove('flipped'); memLock = false; }, 750);
+        }
+      });
+      grid.appendChild(card);
+    });
+    clearInterval(memTimer);
+    memTimer = setInterval(() => { if (memOn) { memTime++; const t = $('#memTime'); if (t) t.textContent = memTime; } }, 1000);
+  }
+  const memStart = $('#memStart');
+  if (memStart) memStart.addEventListener('click', buildMemory);
+  buildMemory();
+
+  /* ---------- 5. CODE BREAKER ---------- */
+  let secret = '', guess = '', tries = 0, wins = 0, breakerOn = false;
+  const breakerDisplay = $('#breakerDisplay'), breakerLog = $('#breakerLog');
+  function newSecret() {
+    secret = String(randInt(1000, 9999));
+    guess = ''; tries = 0; breakerOn = true;
+    breakerDisplay.textContent = '_ _ _ _';
+    breakerLog.innerHTML = 'New secret code generated. Start guessing!';
+    const t = $('#breakerTries'); if (t) t.textContent = '0/8';
+  }
+  function logBreaker(html) {
+    breakerLog.innerHTML = html + '<br>' + breakerLog.innerHTML;
+  }
+  function submitGuess() {
+    if (!breakerOn) return;
+    if (guess.length !== 4) { logBreaker('⚠️ Enter 4 digits first.'); return; }
+    tries++;
+    const t = $('#breakerTries'); if (t) t.textContent = `${tries}/8`;
+    if (guess === secret) {
+      breakerOn = false; wins++;
+      const w = $('#breakerWins'); if (w) w.textContent = wins;
+      breakerDisplay.textContent = secret.split('').join(' ');
+      logBreaker(`<span class="win">🎉 CRACKED! Code was ${secret} in ${tries} tries.</span>`);
+      addXP(50, 'Code cracked!');
+      return;
+    }
+    let bulls = 0, cows = 0;
+    for (let i = 0; i < 4; i++) {
+      if (guess[i] === secret[i]) bulls++;
+      else if (secret.includes(guess[i])) cows++;
+    }
+    logBreaker(`Guess <b>${guess}</b> → ● ${bulls} &nbsp; ◐ ${cows}`);
+    if (tries >= 8) {
+      breakerOn = false;
+      logBreaker(`<span class="lose">💀 Out of tries! Code was ${secret}. Press New Code.</span>`);
+    }
+    guess = '';
+    breakerDisplay.textContent = '_ _ _ _';
+  }
+  $$('#breakerPad button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const k = btn.dataset.k;
+      if (k === 'C') guess = guess.slice(0, -1);
+      else if (k === 'G') submitGuess();
+      else if (guess.length < 4) guess += k;
+      breakerDisplay.textContent = (guess + '____').slice(0, 4).split('').join(' ');
+    });
+  });
+  const breakerNew = $('#breakerNew');
+  if (breakerNew) breakerNew.addEventListener('click', newSecret);
+  newSecret();
+
+  /* ---------- 6. FAKE TERMINAL ---------- */
+  const termInput = $('#termInput'), termOut = $('#termOut');
+  function termPrint(html) {
+    termOut.innerHTML += html + '<br>';
+    const term = $('#terminal');
+    term.scrollTop = term.scrollHeight;
+  }
+  if (termInput) termInput.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    const cmd = termInput.value.trim().toLowerCase();
+    termPrint(`<span class="t-green">akhil@dev:~$</span> ${cmd.replace(/</g, '&lt;')}`);
+    termInput.value = '';
+    if (!cmd) return;
+    if (cmd === 'help') termPrint('Commands: <span class="t-yellow">whoami, skills, projects, hire, sudo, clear, exit</span>');
+    else if (cmd === 'whoami') termPrint('Akhil Patel — Creative Frontend / WordPress / Shopify Developer from Rajkot, India.');
+    else if (cmd === 'skills') termPrint('HTML5 · CSS3 · JavaScript · Bootstrap · WordPress · Elementor · Divi · PHP · Shopify · Liquid');
+    else if (cmd === 'projects') termPrint('Dharm Engineering · Greevos · Radhecon · RMA · Mighty Inc. — scroll up to Work!');
+    else if (cmd === 'hire') termPrint('<span class="t-green">Great choice.</span> Email: akhilpatel99097@gmail.com — let\'s build something great.');
+    else if (cmd === 'sudo') termPrint('<span class="t-red">Permission denied: nice try. 😎</span>');
+    else if (cmd === 'clear') termOut.innerHTML = '';
+    else if (cmd === 'exit') termPrint('There is no exit. Only more code. <span class="t-yellow">⌨️</span>');
+    else if (cmd === 'rm -rf /') termPrint('<span class="t-red">Nice try. This terminal is read-only.</span>');
+    else termPrint(`<span class="t-red">command not found: ${cmd}</span> — try "help"`);
+  });
+})();

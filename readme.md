@@ -22,6 +22,16 @@ Playground (new — try everything!)
 - Projects: "Surprise Me" spotlights a random project with confetti.
 - Extras: scrolling marquee, spinning badge, time-based greeting, copy-email button, scroll progress bar, hero image 3D tilt.
 
+Dev Arcade (developer games, with XP + levels)
+- Bug Squash: squash moving bugs in 30s (golden bugs = +5). Best score saved.
+- Code Typing Sprint: type real code snippets fast — live WPM + accuracy.
+- Dev Quiz: 10 questions on HTML/CSS/JS/WordPress/Shopify with streak bonuses.
+- Tech Memory: flip-card matching for HTML/CSS/JS/WordPress/Shopify/GitHub icons.
+- Code Breaker: crack a 4-digit secret in 8 guesses with ●/◐ hints.
+- Fake Terminal: type `help`, `whoami`, `skills`, `hire`, `sudo`… in a hacker-style terminal.
+- XP system: every win earns XP and levels you up (Junior Dev → 10x Developer), saved in your browser.
+- Matrix-style code rain background behind the Arcade.
+
 Tech Stack
 HTML5
 CSS3
