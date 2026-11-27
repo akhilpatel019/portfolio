@@ -10,6 +10,87 @@
   const finePointer = window.matchMedia('(pointer: fine)').matches;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- 0. Interactive ink on paper ---------- */
+  // A small, original canvas interaction: pointer movement stirs warm pigment
+  // across the hero like ink in water. It is decorative, bounded, and optional.
+  const inkHost = $('.hero-left');
+  if (inkHost && !reducedMotion) {
+    const ink = document.createElement('canvas');
+    ink.className = 'hero-ink-canvas';
+    ink.setAttribute('aria-hidden', 'true');
+    inkHost.appendChild(ink);
+    const ctx = ink.getContext('2d');
+    let inkW = 0, inkH = 0, inkDpr = 1, inkFrame = 0, lastPoint = null;
+    const drops = [];
+    const palette = ['#d95736', '#ef8a5d', '#f5c58c', '#fff0d5'];
+
+    function resizeInk() {
+      const r = inkHost.getBoundingClientRect();
+      inkDpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      inkW = r.width; inkH = r.height;
+      ink.width = Math.round(inkW * inkDpr);
+      ink.height = Math.round(inkH * inkDpr);
+      ink.style.width = inkW + 'px'; ink.style.height = inkH + 'px';
+      ctx.setTransform(inkDpr, 0, 0, inkDpr, 0, 0);
+    }
+    function addDrop(x, y, dx, dy, scale) {
+      if (drops.length > 90) drops.splice(0, drops.length - 90);
+      const angle = Math.atan2(dy, dx) + (Math.random() - .5) * 2.3;
+      const speed = (0.25 + Math.random() * 1.1) * scale;
+      const life = 90 + Math.random() * 65;
+      drops.push({ x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+        r: (3 + Math.random() * 13) * scale, life, maxLife: life,
+        color: palette[Math.floor(Math.random() * palette.length)], spin: Math.random() * 6.28 });
+    }
+    function stir(e) {
+      const r = ink.getBoundingClientRect();
+      const p = { x: e.clientX - r.left, y: e.clientY - r.top };
+      if (lastPoint) {
+        const dx = p.x - lastPoint.x, dy = p.y - lastPoint.y;
+        const distance = Math.hypot(dx, dy);
+        const count = Math.min(5, Math.ceil(distance / 18));
+        for (let i = 0; i < count; i++) {
+          const t = (i + 1) / Math.max(1, count);
+          addDrop(lastPoint.x + dx * t, lastPoint.y + dy * t, dx, dy, .65 + Math.random() * .55);
+        }
+      }
+      lastPoint = p;
+      requestInkFrame();
+    }
+    function dropInk(e) {
+      const r = ink.getBoundingClientRect();
+      for (let i = 0; i < 16; i++) addDrop(e.clientX - r.left, e.clientY - r.top, Math.random() - .5, Math.random() - .5, 1.2);
+      requestInkFrame();
+    }
+    function paintInk() {
+      ctx.clearRect(0, 0, inkW, inkH);
+      for (let i = drops.length - 1; i >= 0; i--) {
+        const d = drops[i];
+        d.x += d.vx; d.y += d.vy; d.vx *= .975; d.vy *= .975;
+        d.life -= 1;
+        const fade = Math.min(1, d.life / 22) * Math.min(1, (d.maxLife - d.life) / 5);
+        if (d.life <= 0 || fade <= 0) { if (d.life <= 0) drops.splice(i, 1); continue; }
+        const radius = d.r * (1 + (1 - d.life / d.maxLife) * .5);
+        const g = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, radius);
+        g.addColorStop(0, d.color + 'cc');
+        g.addColorStop(.42, d.color + '70');
+        g.addColorStop(1, d.color + '00');
+        ctx.globalAlpha = fade;
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(d.x, d.y, radius, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+      if (drops.length) inkFrame = requestAnimationFrame(paintInk);
+      else inkFrame = 0;
+    }
+    function requestInkFrame() { if (!inkFrame) inkFrame = requestAnimationFrame(paintInk); }
+    resizeInk();
+    window.addEventListener('resize', resizeInk, { passive: true });
+    inkHost.addEventListener('pointermove', stir, { passive: true });
+    inkHost.addEventListener('pointerleave', () => { lastPoint = null; }, { passive: true });
+    inkHost.addEventListener('pointerdown', dropInk, { passive: true });
+  }
+
   /* ---------- 1. Scroll progress bar ---------- */
   const progress = document.createElement('div');
   progress.className = 'scroll-progress';
@@ -28,25 +109,6 @@
     const h = new Date().getHours();
     greetingEl.textContent = (h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening') + ' — welcome to my world';
   }
-
-  /* ---------- 3. Hero title letters (subtle hover) ---------- */
-  function splitLetters(el) {
-    Array.from(el.childNodes).forEach(node => {
-      if (node.nodeType === 3) {
-        const frag = document.createDocumentFragment();
-        node.textContent.split('').forEach(ch => {
-          if (ch === ' ') { frag.appendChild(document.createTextNode(' ')); return; }
-          const s = document.createElement('span');
-          s.className = 'play-letter';
-          s.textContent = ch;
-          frag.appendChild(s);
-        });
-        el.replaceChild(frag, node);
-      } else if (node.nodeType === 1 && node.tagName !== 'BR') splitLetters(node);
-    });
-  }
-  const heroTitle = $('.hero-title');
-  if (heroTitle && !reducedMotion) splitLetters(heroTitle);
 
   /* ---------- 4. Scroll reveals (staggered) ---------- */
   const revealEls = $$('.service-item, .skill-item, .timeline-item, .project-card, .contact-card, .stat-item');

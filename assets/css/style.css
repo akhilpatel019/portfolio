@@ -536,7 +536,7 @@ body.dark-theme .hero-content::before {
 
 .typing-wrap {
     display: inline-block;
-    min-width: clamp(220px, 18vw, 300px);
+    min-width: 0;
 }
 
 .typing-text {
@@ -1717,7 +1717,7 @@ RESPONSIVE
     }
 
     .typing-wrap {
-        min-width: 250px;
+        min-width: 0;
         text-align: left;
     }
 
